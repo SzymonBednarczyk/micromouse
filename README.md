@@ -1,2 +1,2 @@
 # micromouse
-Micromouse simulation
+Micromouse GraphicalSimulation
