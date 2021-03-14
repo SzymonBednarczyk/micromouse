@@ -1,5 +1,5 @@
-#ifndef GraphicalSimulation_H
-#define GraphicalSimulation_H
+#ifndef GRAPHICALSIMULATION_H
+#define GRAPHICALSIMULATION_H
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
