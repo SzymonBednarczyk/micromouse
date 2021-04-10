@@ -5,6 +5,8 @@
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 
+#include "labyrinth_tile.h"
+
 class GraphicalSimulation {
 public:
     GraphicalSimulation();
@@ -29,6 +31,7 @@ private:
     sf::RenderWindow* window_;
     sf::Event ev_;
     sf::VideoMode video_mode_;
+    LabyrinthTile tiles_ [3][3];
 };
 
 #endif
