@@ -32,14 +32,13 @@ bool Labyrinth::isKthBitSet(int n, int k)
 }
 
 void Labyrinth::printLabyrinth() {
-    int rows = sizeof tile_walls_of_labirynth_ / sizeof tile_walls_of_labirynth_[0];
-    int cols = sizeof tile_walls_of_labirynth_[0] / sizeof(TileWalls);
     std::vector<std::string> labyrinth_strings;
-    for (size_t i = 0; i < cols; i++)
+
+    for (size_t i = 0; i < LABYRINTH_SIZE; i++)
     {
         std::string bottom_row, middle_row, top_row;
 
-        for (size_t j = 0; j < rows; j++)
+        for (size_t j = 0; j < LABYRINTH_SIZE; j++)
         {
             TileWalls walls = tile_walls_of_labirynth_[i][j];
             if (i == 0 && j == 0) {

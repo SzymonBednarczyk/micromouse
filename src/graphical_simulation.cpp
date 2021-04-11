@@ -6,6 +6,7 @@ GraphicalSimulation::GraphicalSimulation(){
     initWindow();
     loadTextures();
     graphical_labyrinth_.setSprites(&tex_manager_);
+    graphical_robot_.setSprite(&tex_manager_);
 }
 
 GraphicalSimulation::~GraphicalSimulation() {
@@ -22,6 +23,7 @@ void GraphicalSimulation::render() {
 
     // draw objects
     graphical_labyrinth_.draw(window_);
+    graphical_robot_.draw(window_);
     window_->display();
 }
 
@@ -61,6 +63,7 @@ void GraphicalSimulation::pollEvents() {
 }
 
 void GraphicalSimulation::loadTextures() {
+    // Labyrinth
     tex_manager_.loadTexture("tile_E", "graphic_models/walls_E.png");
     tex_manager_.loadTexture("tile_ES", "graphic_models/walls_ES.png");
     tex_manager_.loadTexture("tile_ESW", "graphic_models/walls_ESW.png");
@@ -75,4 +78,6 @@ void GraphicalSimulation::loadTextures() {
     tex_manager_.loadTexture("tile_S", "graphic_models/walls_S.png");
     tex_manager_.loadTexture("tile_SW", "graphic_models/walls_SW.png");
     tex_manager_.loadTexture("tile_W", "graphic_models/walls_W.png");
+    // Robot
+    tex_manager_.loadTexture("robot", "graphic_models/robot.png");
 }

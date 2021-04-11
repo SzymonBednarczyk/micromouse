@@ -10,15 +10,9 @@ LabyrinthTile::~LabyrinthTile()
     ;
 }
 
-void LabyrinthTile::draw(sf::RenderWindow* window) {
-    window->draw(sprite_);
-}
-
 void LabyrinthTile::update(sf::Vector2f pose) {
     sprite_.setPosition(pose);
 }
-
-int LabyrinthTile::tilePixelSize() const { return tile_pixel_size_; }
 
 WallsType LabyrinthTile::wallType() const { return wall_type_; }
 

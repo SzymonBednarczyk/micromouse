@@ -13,10 +13,11 @@ public:
     const TileWalls* getLabirynthWalls();
     const TileWalls* const getSpecificWallOfLabirynth(int col, int row);
     void printLabyrinth();
+    static const size_t LABYRINTH_SIZE = 3;
 private:
-    TileWalls tile_walls_of_labirynth_ [3][3] = {{TileWalls(WallsType::ESW), TileWalls(WallsType::ESW), TileWalls(WallsType::ESW)}, // 0
-                                                 {TileWalls(WallsType::EW), TileWalls(WallsType::W) , TileWalls(WallsType::NE)},  // 1
-                                                 {TileWalls(WallsType::NW) , TileWalls(WallsType::N) , TileWalls(WallsType::NES)}}; // 2
+    TileWalls tile_walls_of_labirynth_ [LABYRINTH_SIZE][LABYRINTH_SIZE] = {{TileWalls(14), TileWalls(WallsType::ESW), TileWalls(WallsType::ESW)}, // 0
+                                                                           {TileWalls(WallsType::EW), TileWalls(WallsType::W) , TileWalls(WallsType::NE)},    // 1
+                                                                           {TileWalls(WallsType::NW) , TileWalls(WallsType::N) , TileWalls(WallsType::NES)}}; // 2
     //  _______
     //2 |   __|
     //1 | |   |

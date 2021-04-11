@@ -5,6 +5,7 @@
 #include "labyrinth_tile.h"
 #include "texture_manager.h"
 
+
 class GraphicalLabyrinth {
 public:
     GraphicalLabyrinth();
@@ -13,11 +14,12 @@ public:
     void draw(sf::RenderWindow* window);
     void update();
     Labyrinth labirynth() const;
+
+    static const int DRAWING_ORIGIN_X = 300;
+    static const int DRAWING_ORIGIN_Y = 300;
 private:
     Labyrinth labirynth_;
-    LabyrinthTile tiles_ [3][3];
-    int drawing_origin_x_ = 100;
-    int drawing_origin_y_ = 300;
+    LabyrinthTile tiles_ [Labyrinth::LABYRINTH_SIZE][Labyrinth::LABYRINTH_SIZE];
 };
 
 #endif // GRAPHICAL_LABYRINTH_H

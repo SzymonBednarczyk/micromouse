@@ -1,12 +1,10 @@
 #include "graphical_labyrinth.h"
 
 GraphicalLabyrinth::GraphicalLabyrinth(){
-    int rows = sizeof tiles_ / sizeof tiles_[0];
-    int cols = sizeof tiles_[0] / sizeof(LabyrinthTile);
 
-    for (size_t i = 0; i < cols; i++)
+    for (size_t i = 0; i < Labyrinth::LABYRINTH_SIZE; i++)
     {
-        for (size_t j = 0; j < rows; j++) {
+        for (size_t j = 0; j < Labyrinth::LABYRINTH_SIZE; j++) {
             tiles_[i][j].setWallType(
                 labirynth_.getSpecificWallOfLabirynth(i, j)->wallsType());
         }
@@ -14,31 +12,26 @@ GraphicalLabyrinth::GraphicalLabyrinth(){
 }
 
 void GraphicalLabyrinth::setSprites(TextureManager *texture_manager) {
-    int rows = sizeof tiles_ / sizeof tiles_[0];
-    int cols = sizeof tiles_[0] / sizeof(LabyrinthTile);
 
-    for (size_t i = 0; i < cols; i++)
+    for (size_t i = 0; i < Labyrinth::LABYRINTH_SIZE; i++)
     {
-        for (size_t j = 0; j < rows; j++) {
+        for (size_t j = 0; j < Labyrinth::LABYRINTH_SIZE; j++) {
             tiles_[i][j].setTexture(
                 texture_manager->getTextureRef(
                     wallsTypeToStr(tiles_[i][j].wallType())));
-            int pixel_size = tiles_[i][j].tilePixelSize();
             tiles_[i][j].update(
                 sf::Vector2f(
-                    drawing_origin_x_ + j * pixel_size,
-                    drawing_origin_y_ - i * pixel_size));
+                    DRAWING_ORIGIN_X + j * LabyrinthTile::TILE_PIXEL_SIZE,
+                    DRAWING_ORIGIN_Y - i * LabyrinthTile::TILE_PIXEL_SIZE));
         }
     }
 }
 
 void GraphicalLabyrinth::draw(sf::RenderWindow* window) {
-    int rows = sizeof tiles_ / sizeof tiles_[0];
-    int cols = sizeof tiles_[0] / sizeof(LabyrinthTile);
 
-    for (size_t i = 0; i < cols; i++)
+    for (size_t i = 0; i < Labyrinth::LABYRINTH_SIZE; i++)
     {
-        for (size_t j = 0; j < rows; j++) {
+        for (size_t j = 0; j < Labyrinth::LABYRINTH_SIZE; j++) {
             tiles_[i][j].draw(window);
             ;
         }

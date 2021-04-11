@@ -9,6 +9,7 @@ class TileWalls {
 public:
     TileWalls(bool north = false, bool east = false, bool south = false, bool west = false);
     TileWalls(WallsType walls_type);
+    TileWalls(const int coded_walls);
     virtual ~TileWalls();
     bool northWall() const;
     void setNorthWall(bool value);

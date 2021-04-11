@@ -10,6 +10,16 @@ TileWalls::TileWalls(bool north, bool east, bool south, bool west) {
 TileWalls::TileWalls(WallsType walls_type) {
     int coded_walls = static_cast<int>(walls_type);
     walls_type_ = walls_type;
+
+    north_wall_ = isKthBitSet(coded_walls, 1);
+    east_wall_ = isKthBitSet(coded_walls, 2);
+    south_wall_ = isKthBitSet(coded_walls, 3);
+    west_wall_ = isKthBitSet(coded_walls, 4);
+}
+
+TileWalls::TileWalls(const int coded_walls) {
+    walls_type_ = static_cast<WallsType>(coded_walls);
+
     north_wall_ = isKthBitSet(coded_walls, 1);
     east_wall_ = isKthBitSet(coded_walls, 2);
     south_wall_ = isKthBitSet(coded_walls, 3);

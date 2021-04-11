@@ -8,13 +8,11 @@ class LabyrinthTile : public Entity {
 public:
     LabyrinthTile();
     virtual ~LabyrinthTile();
-    void draw(sf::RenderWindow* window);
     void update(sf::Vector2f pose);
-    int tilePixelSize() const;
     WallsType wallType() const;
     void setWallType(const WallsType &value);
+    static const int TILE_PIXEL_SIZE = 76;
 private:
-    const int tile_pixel_size_ = 76;
     WallsType wall_type_;
 };
 
