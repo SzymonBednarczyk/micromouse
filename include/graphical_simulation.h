@@ -5,7 +5,8 @@
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 
-#include "labyrinth_tile.h"
+#include "graphical_labyrinth.h"
+#include "texture_manager.h"
 
 class GraphicalSimulation {
 public:
@@ -27,11 +28,13 @@ private:
     void initVariables();
     void initWindow();
     void pollEvents();
+    void loadTextures();
 
     sf::RenderWindow* window_;
     sf::Event ev_;
     sf::VideoMode video_mode_;
-    LabyrinthTile tiles_ [3][3];
+    TextureManager tex_manager_;
+    GraphicalLabyrinth graphical_labyrinth_;
 };
 
 #endif

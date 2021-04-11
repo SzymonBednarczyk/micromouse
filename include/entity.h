@@ -5,11 +5,13 @@
 
 class Entity {
 public:
-    virtual void loadTextureFromFile(const std::string& filename) = 0;
-    virtual void draw() = 0;
-    virtual void update() = 0;
+    void setTexture(sf::Texture &texture) {
+        sprite_.setTexture(texture);
+    }
+
+    virtual void draw(sf::RenderWindow* window) = 0;
+    virtual void update(sf::Vector2f pose) = 0;
 protected:
-    sf::Texture texture_;
     sf::RectangleShape rectangle_;
     sf::Sprite sprite_;
 };

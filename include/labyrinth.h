@@ -2,20 +2,21 @@
 #ifndef LABYRINTH_H
 #define LABYRINTH_H
 
-#include <iostream>
 #include <vector>
+
+#include "tile_walls.h"
 
 class Labyrinth {
 public:
     Labyrinth();
     virtual ~Labyrinth();
-    const int* getLabirynthWalls();
-    const int* const getSpecificWallOfLabirynth(int row, int col);
+    const TileWalls* getLabirynthWalls();
+    const TileWalls* const getSpecificWallOfLabirynth(int col, int row);
     void printLabyrinth();
 private:
-    int walls_of_labirynth_ [3][3] = {{14, 14, 14}, // 0
-                                      {10, 8 , 3},  // 1
-                                      {9 , 1 , 7}}; // 2
+    TileWalls tile_walls_of_labirynth_ [3][3] = {{TileWalls(WallsType::ESW), TileWalls(WallsType::ESW), TileWalls(WallsType::ESW)}, // 0
+                                                 {TileWalls(WallsType::EW), TileWalls(WallsType::W) , TileWalls(WallsType::NE)},  // 1
+                                                 {TileWalls(WallsType::NW) , TileWalls(WallsType::N) , TileWalls(WallsType::NES)}}; // 2
     //  _______
     //2 |   __|
     //1 | |   |
