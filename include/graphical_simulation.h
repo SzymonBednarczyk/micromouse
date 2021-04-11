@@ -8,6 +8,8 @@
 #include "graphical_labyrinth.h"
 #include "graphical_robot.h"
 #include "texture_manager.h"
+#include "simulation.h"
+#include <iostream>
 
 class GraphicalSimulation {
 public:
@@ -36,7 +38,8 @@ private:
     sf::VideoMode video_mode_;
     TextureManager tex_manager_;
     GraphicalLabyrinth graphical_labyrinth_;
-    Graphical_Robot graphical_robot_;
+    GraphicalRobot graphical_robot_;
+    Simulation simulation_;
 };
 
 #endif

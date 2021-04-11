@@ -6,18 +6,19 @@
 #include "texture_manager.h"
 
 
-class Graphical_Robot : public Entity, public Robot {
+class GraphicalRobot : public Entity {
 public:
-    Graphical_Robot();
-    virtual ~Graphical_Robot(){}
+    GraphicalRobot();
+    virtual ~GraphicalRobot(){}
 
-    static const int DRAWING_ORIGIN_X = 310;
-    static const int DRAWING_ORIGIN_Y = 320;
+    static const int DRAWING_ORIGIN_X = 337;
+    static const int DRAWING_ORIGIN_Y = 342;
     static const int PIXEL_SIZE_X = 53;
     static const int PIXEL_SIZE_Y = 43;
-    std::string TEXTURENAME() const;
+    std::string textureName() const;
 private:
-    const std::string TEXTURE_NAME_ = "robot";
+    const std::string texture_name_ = "robot";
+    Robot robot_;
 };
 
 #endif // GRAPHICAL_ROBOT_H

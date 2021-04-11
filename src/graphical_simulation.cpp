@@ -1,16 +1,17 @@
 #include "graphical_simulation.h"
 
 // public
-GraphicalSimulation::GraphicalSimulation(){
+GraphicalSimulation::GraphicalSimulation() {
     initVariables();
     initWindow();
     loadTextures();
     graphical_labyrinth_.loadEntity(&tex_manager_);
-    graphical_robot_.load(sf::Vector2u(Graphical_Robot::PIXEL_SIZE_X,
-                                       Graphical_Robot::PIXEL_SIZE_Y),
+    graphical_robot_.load(sf::Vector2u(GraphicalRobot::PIXEL_SIZE_X,
+                                       GraphicalRobot::PIXEL_SIZE_Y),
                           tex_manager_.getTextureRef(
-                              graphical_robot_.TEXTURENAME()));
-    // graphical_robot_.setPosition(310, 320);
+                              graphical_robot_.textureName()));
+    simulation_ = Simulation(LabyrinthTile::TILE_PIXEL_SIZE);
+    simulation_.start();
 }
 
 GraphicalSimulation::~GraphicalSimulation() {
@@ -19,6 +20,18 @@ GraphicalSimulation::~GraphicalSimulation() {
 
 void GraphicalSimulation::update() {
     pollEvents();
+    // pose relative to left bottom tile left bottom vertex of maze
+    sf::Vector2f robot_relative_pose = sf::Vector2f(
+        graphical_robot_.getPosition().x - GraphicalLabyrinth::DRAWING_ORIGIN_X,
+        GraphicalLabyrinth::DRAWING_ORIGIN_Y + LabyrinthTile::TILE_PIXEL_SIZE - graphical_robot_.getPosition().y);
+
+    std::pair<size_t, size_t> robot_maze_coordinates =
+        simulation_.checkRobotPositionInMaze(robot_relative_pose);
+
+    if (robot_maze_coordinates.second == 2)
+        graphical_robot_.move(10.0f, 0.f);
+    else
+        graphical_robot_.move(0.0f, -10.f);
 }
 
 void GraphicalSimulation::render() {
