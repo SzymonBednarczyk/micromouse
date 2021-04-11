@@ -5,8 +5,12 @@ GraphicalSimulation::GraphicalSimulation(){
     initVariables();
     initWindow();
     loadTextures();
-    graphical_labyrinth_.setSprites(&tex_manager_);
-    graphical_robot_.setSprite(&tex_manager_);
+    graphical_labyrinth_.loadEntity(&tex_manager_);
+    graphical_robot_.load(sf::Vector2u(Graphical_Robot::PIXEL_SIZE_X,
+                                       Graphical_Robot::PIXEL_SIZE_Y),
+                          tex_manager_.getTextureRef(
+                              graphical_robot_.TEXTURENAME()));
+    // graphical_robot_.setPosition(310, 320);
 }
 
 GraphicalSimulation::~GraphicalSimulation() {
@@ -23,7 +27,7 @@ void GraphicalSimulation::render() {
 
     // draw objects
     graphical_labyrinth_.draw(window_);
-    graphical_robot_.draw(window_);
+    window_->draw(graphical_robot_);
     window_->display();
 }
 
@@ -39,7 +43,7 @@ void GraphicalSimulation::initWindow() {
     video_mode_.height = 760;
     video_mode_.width = 1024;
     window_ = new sf::RenderWindow(video_mode_, "Micromouse", sf::Style::Titlebar | sf::Style::Close);
-    window_->setPosition(sf::Vector2i(1500, 100));
+    window_->setPosition(sf::Vector2i(2000, 200));
     window_->setFramerateLimit(1);
 
 }

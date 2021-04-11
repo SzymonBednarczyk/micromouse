@@ -1,15 +1,7 @@
 #include "graphical_robot.h"
 
 Graphical_Robot::Graphical_Robot(/* args */) {
-    ;
+    this->setPosition(DRAWING_ORIGIN_X, DRAWING_ORIGIN_Y);
 }
 
-void Graphical_Robot::update(sf::Vector2f pose) {
-    sprite_.setPosition(pose);
-}
-
-void Graphical_Robot::setSprite(TextureManager *texture_manager) {
-    sprite_.setTexture(
-        texture_manager->getTextureRef(TEXTURE_NAME_));
-    this->update(sf::Vector2f(DRAWING_ORIGIN_X, DRAWING_ORIGIN_Y));
-}
+std::string Graphical_Robot::TEXTURENAME() const { return TEXTURE_NAME_; }
