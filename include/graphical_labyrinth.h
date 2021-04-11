@@ -10,7 +10,7 @@ class GraphicalLabyrinth {
 public:
     GraphicalLabyrinth();
     virtual ~GraphicalLabyrinth(){}
-    void setSprites(TextureManager *texture_manager);
+    void loadEntity(TextureManager *texture_manager);
     void draw(sf::RenderWindow* window);
     void update();
     Labyrinth labirynth() const;
