@@ -5,11 +5,11 @@
 #include <string>
 
 
-enum class WallsType {N = 1, E, NE, S, NS, ES, NES, W, NW, EW, NEW, SW, NSW, ESW};
+enum class WallsType {UNKNOWN = 0, N, E, NE, S, NS, ES, NES, W, NW, EW, NEW, SW, NSW, ESW};
 
 extern std::string wallsTypeToStr(WallsType type);
 
-enum class RobotDirection {N = 0, E, S, W};
+enum class Direction {N = 0, E, S, W};
 
 
 #endif // DATA_STRUCTURES_H

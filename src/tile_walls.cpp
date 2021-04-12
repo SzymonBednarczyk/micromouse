@@ -1,10 +1,12 @@
 #include "tile_walls.h"
 
-TileWalls::TileWalls(bool north, bool east, bool south, bool west) {
+TileWalls::TileWalls(bool north, bool east, bool south, bool west, WallsType type) {
     north_wall_ = north;
     east_wall_ = east;
     south_wall_ = south;
     west_wall_ = west;
+    walls_type_ = type;
+    tile_distance_ = -1;
 }
 
 TileWalls::TileWalls(WallsType walls_type) {
@@ -15,6 +17,8 @@ TileWalls::TileWalls(WallsType walls_type) {
     east_wall_ = isKthBitSet(coded_walls, 2);
     south_wall_ = isKthBitSet(coded_walls, 3);
     west_wall_ = isKthBitSet(coded_walls, 4);
+
+    tile_distance_ = -1;
 }
 
 TileWalls::TileWalls(const int coded_walls) {
@@ -24,6 +28,8 @@ TileWalls::TileWalls(const int coded_walls) {
     east_wall_ = isKthBitSet(coded_walls, 2);
     south_wall_ = isKthBitSet(coded_walls, 3);
     west_wall_ = isKthBitSet(coded_walls, 4);
+
+    tile_distance_ = -1;
 }
 
 TileWalls::~TileWalls(){}
@@ -45,6 +51,10 @@ bool TileWalls::westWall() const { return west_wall_; }
 void TileWalls::setWestWall(bool value) { west_wall_ = value; }
 
 WallsType TileWalls::wallsType() const { return walls_type_; }
+
+int TileWalls::tileDistance() const { return tile_distance_; }
+
+void TileWalls::setTileDistance(int tile_distance) { tile_distance_ = tile_distance; }
 
 bool TileWalls::isKthBitSet(int n, int k)
 {

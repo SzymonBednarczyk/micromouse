@@ -11,7 +11,7 @@ public:
     ~IrSensor();
     SensorReadings getReadings(Labyrinth* labyrinth,
                                std::pair<size_t, size_t> robot_pose,
-                               RobotDirection robot_direction);
+                               Direction robot_direction);
 private:
 
 };

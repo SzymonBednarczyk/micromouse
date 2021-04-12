@@ -17,8 +17,10 @@ public:
     static const int PIXEL_SIZE_X = 53;
     static const int PIXEL_SIZE_Y = 43;
     std::string textureName() const;
-    void updateRobotReadings(
+    bool updateRobotReadings(
         Labyrinth* labyrinth, const std::pair<size_t, size_t> &robot_maze_coordinates);
+    void choosePathToRide();
+    sf::Vector2f getRobotVelocity();
 private:
     const std::string texture_name_ = "robot";
     Robot robot_;
