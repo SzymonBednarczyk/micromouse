@@ -11,7 +11,7 @@ public:
     Labyrinth();
     virtual ~Labyrinth();
     const TileWalls* getLabirynthWalls();
-    const TileWalls* const getSpecificWallOfLabirynth(int col, int row);
+    const TileWalls& getSpecificWallOfLabirynth(int row, int col);
     void printLabyrinth();
     static const size_t LABYRINTH_SIZE = 3;
 private:

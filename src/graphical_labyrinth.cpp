@@ -6,7 +6,7 @@ GraphicalLabyrinth::GraphicalLabyrinth(){
     {
         for (size_t j = 0; j < Labyrinth::LABYRINTH_SIZE; j++) {
             tiles_[i][j].setWallType(
-                labirynth_.getSpecificWallOfLabirynth(i, j)->wallsType());
+                labirynth_.getSpecificWallOfLabirynth(i, j).wallsType());
         }
     }
 }
@@ -43,4 +43,4 @@ void GraphicalLabyrinth::update() {
     ;
 }
 
-Labyrinth GraphicalLabyrinth::labirynth() const { return labirynth_; }
+Labyrinth* GraphicalLabyrinth::labirynth() { return &labirynth_; }

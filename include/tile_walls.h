@@ -1,7 +1,7 @@
 #ifndef TILE_WALLS_H
 #define TILE_WALLS_H
 
-#include "utils.h"
+#include "data_structures.h"
 #include <iostream>
 
 

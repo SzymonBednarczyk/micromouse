@@ -9,3 +9,8 @@ GraphicalRobot::GraphicalRobot(/* args */) {
 std::string GraphicalRobot::textureName() const {
      return texture_name_;
 }
+
+void GraphicalRobot::updateRobotReadings(
+        Labyrinth* labyrinth, const std::pair<size_t, size_t> &robot_maze_coordinates) {
+    robot_.getWallsReadings(labyrinth, robot_maze_coordinates);
+}

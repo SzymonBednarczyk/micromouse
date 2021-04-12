@@ -1,4 +1,4 @@
-#include "utils.h"
+#include "data_structures.h"
 
 extern std::string wallsTypeToStr(WallsType type) {
     switch(type) {

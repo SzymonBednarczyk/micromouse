@@ -2,7 +2,7 @@
 #define LABYRINTH_TILE_H
 
 #include "entity.h"
-#include "utils.h"
+#include "data_structures.h"
 
 class LabyrinthTile : public Entity {
 public:

@@ -13,7 +13,7 @@ public:
     void loadEntity(TextureManager *texture_manager);
     void draw(sf::RenderWindow* window);
     void update();
-    Labyrinth labirynth() const;
+    Labyrinth* labirynth();
 
     static const int DRAWING_ORIGIN_X = 300;
     static const int DRAWING_ORIGIN_Y = 300;

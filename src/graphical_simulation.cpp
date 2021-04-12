@@ -28,6 +28,9 @@ void GraphicalSimulation::update() {
     std::pair<size_t, size_t> robot_maze_coordinates =
         simulation_.checkRobotPositionInMaze(robot_relative_pose);
 
+    graphical_robot_.updateRobotReadings(
+        graphical_labyrinth_.labirynth(), robot_maze_coordinates);
+
     if (robot_maze_coordinates.second == 2)
         graphical_robot_.move(10.0f, 0.f);
     else

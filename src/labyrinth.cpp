@@ -7,12 +7,11 @@ Labyrinth::~Labyrinth(){
     ;
 }
 
-const TileWalls* const Labyrinth::getSpecificWallOfLabirynth(int col, int row) {
-    try{
-        return &tile_walls_of_labirynth_[col][row];
-    } catch(...){
-        std::cout << "Can't get specific field, indexes out of boundres: [" << row << ", " <<col <<"]\n\r";
-    }
+const TileWalls& Labyrinth::getSpecificWallOfLabirynth(int row, int col) {
+    if (row >= LABYRINTH_SIZE || col >= LABYRINTH_SIZE)
+        throw std::out_of_range("indexe for labyrinth is out of range");
+    return tile_walls_of_labirynth_[row][col];
+
 }
 
 const TileWalls* Labyrinth::getLabirynthWalls() {

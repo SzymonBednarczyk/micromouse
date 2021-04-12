@@ -4,6 +4,7 @@
 #include "robot.h"
 #include "entity.h"
 #include "texture_manager.h"
+#include "labyrinth.h"
 
 
 class GraphicalRobot : public Entity {
@@ -16,6 +17,8 @@ public:
     static const int PIXEL_SIZE_X = 53;
     static const int PIXEL_SIZE_Y = 43;
     std::string textureName() const;
+    void updateRobotReadings(
+        Labyrinth* labyrinth, const std::pair<size_t, size_t> &robot_maze_coordinates);
 private:
     const std::string texture_name_ = "robot";
     Robot robot_;
