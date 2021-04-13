@@ -37,6 +37,9 @@ void GraphicalSimulation::update() {
 
             graphical_robot_.choosePathToRide();
         }
+        if(graphical_robot_.changeDirection(robot_relative_pose)) {
+            graphical_robot_.changeAnimation();
+        }
 
         graphical_robot_.move(graphical_robot_.getRobotVelocity());
     }
@@ -65,7 +68,7 @@ void GraphicalSimulation::initWindow() {
     video_mode_.width = 1024;
     window_ = new sf::RenderWindow(video_mode_, "Micromouse", sf::Style::Titlebar | sf::Style::Close);
     window_->setPosition(sf::Vector2i(2000, 200));
-    window_->setFramerateLimit(1);
+    window_->setFramerateLimit(2);
 
 }
 
@@ -104,5 +107,5 @@ void GraphicalSimulation::loadTextures() {
     tex_manager_.loadTexture("tile_SW", "graphic_models/walls_SW.png");
     tex_manager_.loadTexture("tile_W", "graphic_models/walls_W.png");
     // Robot
-    tex_manager_.loadTexture("robot", "graphic_models/robot.png");
+    tex_manager_.loadTexture("robot", "graphic_models/robot_sprite.png");
 }

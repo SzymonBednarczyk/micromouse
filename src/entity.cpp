@@ -23,6 +23,16 @@ void Entity::load(sf::Vector2u tileSize, sf::Texture &texture, unsigned int numb
 
 }
 
+void Entity::setTextureArea(sf::Vector2u top_left, sf::Vector2u top_right,
+                            sf::Vector2u bottom_right, sf::Vector2u bottom_left) {
+    sf::Vertex* quad = &vertices_[0];
+
+    quad[0].texCoords = sf::Vector2f(bottom_left.x, bottom_left.y);
+    quad[1].texCoords = sf::Vector2f(bottom_right.x, bottom_right.y);
+    quad[2].texCoords = sf::Vector2f(top_right.x, top_right.y);
+    quad[3].texCoords = sf::Vector2f(top_left.x, top_left.y);
+}
+
 void Entity::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     // apply the entity's transform -- combine it with the one that was passed by the caller
