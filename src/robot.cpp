@@ -9,12 +9,16 @@ Robot::Robot() {
     x_vel_ = 0.f;
     y_vel_ = 0.f;
     robot_maze_coordinates_.first = 1;
-    dir_str = "N";
     first_tile_ = true;
 
     for (auto &val : labyrinth_map_) {
         val.resize(Labyrinth::LABYRINTH_SIZE);
     }
+}
+
+Robot::~Robot(){
+    // delete sensor_;
+    // delete path_algorithm_;
 }
 
 bool Robot::getWallsReadings(
@@ -29,7 +33,7 @@ bool Robot::getWallsReadings(
     labyrinth_map_[robot_maze_coordinates.first][robot_maze_coordinates.second]
         = convertReadingsToMap(readings);
 
-    std::cout << "left reading: " << readings.left << " front: " << readings.front << " right: " <<readings.right << " robot direction: " << dir_str << std::endl;
+    std::cout << "left reading: " << readings.left << " front: " << readings.front << " right: " <<readings.right << " robot direction: " << robot_direction_ << std::endl;
 
     robot_maze_coordinates_ = robot_maze_coordinates;
 
@@ -41,31 +45,13 @@ bool Robot::getWallsReadings(
 void Robot::choosePathToRide() {
     Direction direction_to_move = path_algorithm_->makeMoveDecision(
         labyrinth_map_, robot_maze_coordinates_, robot_direction_);
-    // std::string dir_str;
-
-    switch (direction_to_move) {
-        case Direction::N:
-            dir_str = 'N';
-            break;
-        case Direction::E:
-            dir_str = 'E';
-            break;
-        case Direction::S:
-            dir_str = 'S';
-            break;
-        case Direction::W:
-            dir_str = 'W';
-            break;
-    }
 
     move_instructions_.push_back(direction_to_move);
-    move_instructions_str_.push_back(dir_str);
 
-    std::string directions = "";
-    for (auto const &dir : move_instructions_str_) {
-        directions += dir + " -> ";
+    for (auto const &dir : move_instructions_) {
+        std::cout << "direction " << dir << " ";
     }
-    std::cout << "directions: " << directions << std::endl;
+    std::cout << std::endl;
 }
 
 bool Robot::changeDirection(float robot_pose_x, float robot_pose_y) {
@@ -79,13 +65,12 @@ bool Robot::changeDirection(float robot_pose_x, float robot_pose_y) {
     float middle_of_tile_y =
         LabyrinthTile::TILE_PIXEL_SIZE * robot_maze_coordinates_.first
             + LabyrinthTile::TILE_PIXEL_SIZE / 2;
-    if (std::abs(middle_of_tile_x - robot_pose_x) <= 5 &&
-        std::abs(middle_of_tile_y - robot_pose_y) <= 5) {
+    if (std::abs(middle_of_tile_x - robot_pose_x) <= std::max(1, static_cast<int>(std::ceil(velocity_ / 3))) &&
+        std::abs(middle_of_tile_y - robot_pose_y) <= std::max(1, static_cast<int>(std::ceil(velocity_ / 3)))) {
 
         if (!first_tile_) {
             robot_direction_ = *std::next(move_instructions_.begin());
             move_instructions_.pop_front();
-            move_instructions_str_.pop_front();
         } else {
             robot_direction_ = move_instructions_.back();
             first_tile_ = false;

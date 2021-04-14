@@ -5,6 +5,7 @@
 #include "entity.h"
 #include "texture_manager.h"
 #include "labyrinth.h"
+#include "graphical_labyrinth.h"
 
 
 class GraphicalRobot : public Entity {
@@ -12,8 +13,8 @@ public:
     GraphicalRobot();
     virtual ~GraphicalRobot(){}
 
-    static const int DRAWING_ORIGIN_X = 337;
-    static const int DRAWING_ORIGIN_Y = 342;
+    static const int DRAWING_ORIGIN_X = GraphicalLabyrinth::DRAWING_ORIGIN_X + LabyrinthTile::TILE_PIXEL_SIZE / 2;
+    static const int DRAWING_ORIGIN_Y = GraphicalLabyrinth::DRAWING_ORIGIN_Y + LabyrinthTile::TILE_PIXEL_SIZE / 2;
     static const int PIXEL_SIZE_X = 55;
     static const int PIXEL_SIZE_Y = 59;
     std::string textureName() const;

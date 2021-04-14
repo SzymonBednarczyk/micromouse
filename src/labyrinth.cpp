@@ -30,6 +30,85 @@ bool Labyrinth::isKthBitSet(int n, int k)
     }
 }
 
+bool Labyrinth::loadLabyrinthFromFile(std::string file_path) {
+    std::fstream file(file_path, std::ios::in);
+
+    if(!file.is_open()) {
+        throw std::runtime_error("Could not open file\n");
+    }
+
+    std::string data_line;
+    size_t row = 0;
+    // read every line from the stream
+
+    while( getline(file, data_line) )
+    {
+        if (row >= LABYRINTH_SIZE){
+            file.close();
+            throw std::runtime_error("Invalid data in file, too much rows for labyrinth\n");
+        }
+
+        std::istringstream csv_stream(data_line);
+        std::string csvColumn = "";
+        std::string csv_element;
+        int col = 0;
+        // read every element from the line that is seperated by commas
+        // and put it into the vector or strings
+        while(getline(csv_stream, csv_element, ','))
+        {
+            if (col >= LABYRINTH_SIZE){
+                file.close();
+                throw std::runtime_error("Invalid data in file, too much columns for labyrinth\n");
+            }
+
+            try {
+                tile_walls_of_labirynth_[row][col] = TileWalls(std::stoi(csv_element));
+            }
+            catch(const std::invalid_argument& exc) {
+                std::cout << "Invalid data in file, numbers separated by coma needed\n";
+                return false;
+            }
+
+            csvColumn += csv_element + " ";
+            ++col;
+        }
+        std::cout << row << " row " << col << " col: " << csvColumn <<std::endl;
+        ++row;
+    }
+
+    if (row < LABYRINTH_SIZE - 1) {
+
+        file.close();
+        throw std::runtime_error("Not enough data in file\n");
+    }
+
+    file.close();
+
+    return true;
+}
+
+void Labyrinth::saveLabyrinthToFile(std::string file_path) {
+    std::fstream file(file_path, std::ios::out);
+
+    if(!file.is_open()) {
+        throw std::runtime_error("Could not open file\n");
+    }
+
+    for (size_t i = 0; i < LABYRINTH_SIZE; i++) {
+        std::string line;
+
+        for (size_t j = 0; j < LABYRINTH_SIZE; j++) {
+            line += wallIntToStr(tile_walls_of_labirynth_[i][j].wallsType()) + ',';
+        }
+
+        line.pop_back();
+        line +="\n";
+        file << line;
+    }
+
+    file.close();
+}
+
 void Labyrinth::printLabyrinth() {
     std::vector<std::string> labyrinth_strings;
 

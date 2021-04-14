@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <list>
+#include <cmath>
 
 #include "ir_sensor.h"
 #include "sensor.h"
@@ -16,7 +17,7 @@
 class Robot {
 public:
     Robot();
-    virtual ~Robot(){}
+    virtual ~Robot();
     bool getWallsReadings(
         Labyrinth* labyrinth, const std::pair<size_t, size_t> &robot_maze_coordinates);
     void choosePathToRide();
@@ -29,9 +30,9 @@ private:
     void changeVelocities();
     TileWalls convertReadingsToMap(SensorReadings readings);
     Direction robot_direction_;
-    Sensor* sensor_;
+    Sensor* sensor_{nullptr};
     IrSensor ir_sensor_;
-    PathAlgorithm* path_algorithm_;
+    PathAlgorithm* path_algorithm_{nullptr};
     WallFollower wall_follower_;
     std::vector<std::vector<TileWalls>> labyrinth_map_;
     std::pair<size_t, size_t> robot_maze_coordinates_;
@@ -40,8 +41,6 @@ private:
     float velocity_;
     float x_vel_;
     float y_vel_;
-    std::string dir_str;
-    std::list<std::string> move_instructions_str_;
     std::list<Direction> move_instructions_;
 };
 

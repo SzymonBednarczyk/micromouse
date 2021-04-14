@@ -30,7 +30,6 @@ void GraphicalLabyrinth::loadEntity(TextureManager *texture_manager) {
 }
 
 void GraphicalLabyrinth::draw(sf::RenderWindow* window) {
-
     for (size_t i = 0; i < Labyrinth::LABYRINTH_SIZE; i++)
     {
         for (size_t j = 0; j < Labyrinth::LABYRINTH_SIZE; j++) {
@@ -44,3 +43,30 @@ void GraphicalLabyrinth::update() {
 }
 
 Labyrinth* GraphicalLabyrinth::labirynth() { return &labirynth_; }
+
+bool GraphicalLabyrinth::loadLabyrinthFromFile(std::string file_path) {
+    try {
+        bool result = labirynth_.loadLabyrinthFromFile(file_path);
+
+        for (size_t i = 0; i < Labyrinth::LABYRINTH_SIZE; i++)
+        {
+            for (size_t j = 0; j < Labyrinth::LABYRINTH_SIZE; j++) {
+                tiles_[i][j].setWallType(
+                    labirynth_.getSpecificWallOfLabirynth(i, j).wallsType());
+            }
+        }
+
+        return result;
+    } catch (const std::exception& err) {
+        std::cout << err.what();
+        return false;
+    }
+}
+
+void GraphicalLabyrinth::saveLabyrinthToFile(std::string file_path) {
+    try {
+        labirynth_.saveLabyrinthToFile(file_path);
+    } catch (const std::runtime_error& err) {
+        std::cout << err.what();
+    }
+}

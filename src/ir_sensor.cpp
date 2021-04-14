@@ -5,11 +5,6 @@ IrSensor::IrSensor(/* args */)
     ;
 }
 
-IrSensor::~IrSensor()
-{
-    ;
-}
-
 SensorReadings
 IrSensor::getReadings(Labyrinth* labyrinth,
                       std::pair<size_t, size_t> robot_pose,

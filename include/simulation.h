@@ -4,6 +4,7 @@
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <iomanip>
 
 #include "labyrinth.h"
 
@@ -30,7 +31,7 @@ public:
      *
      * @return sf::Time time elapsed
      */
-    sf::Time getTimeElapsed() const;
+    std::string getTimeElapsed() const;
     /**
      * @brief getter if robot reached end of labyrinth
      *
@@ -38,12 +39,14 @@ public:
      * @return false - robot did not reached end
      */
     bool robotWon() const;
+    bool started() const;
 private:
     bool hasRobotReachedTarget(std::pair<size_t, size_t> coordinates);
 
     sf::Clock clock_;
     bool robot_won_;
     float maze_tile_size_;
+    bool started_;
 };
 
 #endif // SIMULATION_H

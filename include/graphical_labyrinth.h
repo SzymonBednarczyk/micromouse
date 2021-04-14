@@ -14,6 +14,8 @@ public:
     void draw(sf::RenderWindow* window);
     void update();
     Labyrinth* labirynth();
+    bool loadLabyrinthFromFile(std::string file_path);
+    void saveLabyrinthToFile(std::string file_path);
 
     static const int DRAWING_ORIGIN_X = 300;
     static const int DRAWING_ORIGIN_Y = 300;
