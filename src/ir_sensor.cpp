@@ -41,5 +41,5 @@ IrSensor::getReadings(Labyrinth* labyrinth,
             break;
     }
 
-    return SensorReadings(left, front, right);
+    return SensorReadings({left}, {front}, {right});
 }

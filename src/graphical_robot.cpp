@@ -1,6 +1,6 @@
 #include "graphical_robot.h"
 
-GraphicalRobot::GraphicalRobot(/* args */) {
+GraphicalRobot::GraphicalRobot() {
     this->setPosition(DRAWING_ORIGIN_X, DRAWING_ORIGIN_Y);
     this->setOrigin(static_cast<float>(PIXEL_SIZE_X / 2),
                     static_cast<float>(PIXEL_SIZE_Y / 2));
@@ -66,4 +66,8 @@ bool GraphicalRobot::changeDirection(sf::Vector2f robot_relative_pose) {
 
 void GraphicalRobot::setPathAlgorithm(GuiType algorithm) {
      robot_.setPathAlgorithm(algorithm);
+}
+
+void GraphicalRobot::setSensor(GuiType sensor) {
+     robot_.setSensor(sensor);
 }

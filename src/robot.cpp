@@ -5,7 +5,7 @@ Robot::Robot() {
     sensor_ = &ir_sensor_;
     path_algorithm_ = &wall_follower_;
     labyrinth_map_.resize(Labyrinth::LABYRINTH_SIZE);
-    velocity_ = 10.f;
+    velocity_ = 5.f;
     x_vel_ = 0.f;
     y_vel_ = 0.f;
     robot_maze_coordinates_.first = 1;
@@ -30,12 +30,11 @@ bool Robot::getWallsReadings(
     SensorReadings readings =
         sensor_->getReadings(labyrinth, robot_maze_coordinates, robot_direction_);
 
-    labyrinth_map_[robot_maze_coordinates.first][robot_maze_coordinates.second]
-        = convertReadingsToMap(readings);
-
-    std::cout << "left reading: " << readings.left << " front: " << readings.front << " right: " <<readings.right << " robot direction: " << robot_direction_ << std::endl;
-
     robot_maze_coordinates_ = robot_maze_coordinates;
+
+    convertReadingsToMap(readings);
+
+    std::cout << "left reading: " << readings.left.front() << " front: " << readings.front.front() << " right: " <<readings.right.front() << " robot direction: " << robot_direction_ << std::endl;
 
     new_tile_ = true;
 
@@ -107,6 +106,20 @@ void Robot::setPathAlgorithm(GuiType algorithm) {
     }
 }
 
+void Robot::setSensor(GuiType sensor) {
+    switch (sensor) {
+        case GuiType::IR_SENSOR:
+            sensor_ = &ir_sensor_;
+            break;
+        case GuiType::LASER_SCANNER:
+            sensor_ = &scanner_;
+            break;
+        default:
+            sensor_ = &ir_sensor_;
+            break;
+    }
+}
+
 void Robot::changeVelocities() {
     switch (robot_direction_) {
         case Direction::N:
@@ -132,22 +145,26 @@ void Robot::changeVelocities() {
     }
 }
 
-TileWalls Robot::convertReadingsToMap(SensorReadings readings) {
+void Robot::convertReadingsToMap(SensorReadings readings) {
     switch (robot_direction_) {
         case Direction::N:
-            return TileWalls(readings.front, readings.right, false, readings.left, WallsType::N);
+            labyrinth_map_[robot_maze_coordinates_.first][robot_maze_coordinates_.second] =
+                TileWalls(readings.front.front(), readings.right.front(), false, readings.left.front(), WallsType::N);
             break;
         case Direction::E:
-            return TileWalls(readings.left, readings.front, readings.right, false, WallsType::E);
+            labyrinth_map_[robot_maze_coordinates_.first][robot_maze_coordinates_.second] =
+                TileWalls(readings.left.front(), readings.front.front(), readings.right.front(), false, WallsType::E);
             break;
         case Direction::S:
-            return TileWalls(false, readings.left, readings.front, readings.right, WallsType::S);
+            labyrinth_map_[robot_maze_coordinates_.first][robot_maze_coordinates_.second] =
+                TileWalls(false, readings.left.front(), readings.front.front(), readings.right.front(), WallsType::S);
             break;
         case Direction::W:
-            return TileWalls(readings.right, false, readings.left, readings.front, WallsType::W);
+            labyrinth_map_[robot_maze_coordinates_.first][robot_maze_coordinates_.second] =
+                TileWalls(readings.right.front(), false, readings.left.front(), readings.front.front(), WallsType::W);
             break;
         default:
-            return TileWalls();
+            labyrinth_map_[robot_maze_coordinates_.first][robot_maze_coordinates_.second] = TileWalls();
             break;
     }
 }

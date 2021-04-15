@@ -38,7 +38,8 @@ private:
     void loadStylesheets();
     void createGui();
     void handleGuiButtonPressed(GuiType gui_button);
-    void handlePathAlgorithmButtonPressed(GuiType sensors_button);
+    void handlePathAlgorithmButtonPressed(GuiType path_algorithm);
+    void handleSensorButtonPressed(GuiType sensors_button);
 
     bool input_text_;
     sf::RenderWindow* window_;

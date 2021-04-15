@@ -14,6 +14,7 @@
 #include "wall_follower.h"
 #include "labyrinth_tile.h"
 #include "brute_force.h"
+#include "laser_scanner.h"
 
 class Robot {
 public:
@@ -28,12 +29,14 @@ public:
     float yVel() const;
     Direction robotDirection() const;
     void setPathAlgorithm(GuiType algorithm);
+    void setSensor(GuiType sensor);
 private:
     void changeVelocities();
-    TileWalls convertReadingsToMap(SensorReadings readings);
+    void convertReadingsToMap(SensorReadings readings);
     Direction robot_direction_;
     Sensor* sensor_{nullptr};
     IrSensor ir_sensor_;
+    LaserScanner scanner_;
     PathAlgorithm* path_algorithm_{nullptr};
     WallFollower wall_follower_;
     BruteForce brute_force_;

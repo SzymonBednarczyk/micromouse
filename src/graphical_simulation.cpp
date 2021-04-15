@@ -3,7 +3,7 @@
 // public
 GraphicalSimulation::GraphicalSimulation() {
     input_text_ = false;
-    frame_limit_ = 5;
+    frame_limit_ = 60;
     initVariables();
     initWindow();
     loadTextures();
@@ -83,10 +83,10 @@ void GraphicalSimulation::initVariables() {
 }
 
 void GraphicalSimulation::initWindow() {
-    video_mode_.height = 760;
+    video_mode_.height = 900;
     video_mode_.width = 1024;
     window_ = new sf::RenderWindow(video_mode_, "Micromouse", sf::Style::Titlebar | sf::Style::Close);
-    window_->setPosition(sf::Vector2i(500, 200));
+    window_->setPosition(sf::Vector2i(200, 200));
     window_->setFramerateLimit(frame_limit_);
 
 }
@@ -129,6 +129,13 @@ void GraphicalSimulation::pollEvents() {
                 if(ev_.mouseButton.button == sf::Mouse::Left) {
                     GuiType gui_button_pressed;
 
+                    if (guis_.at("sensors").visible()) {
+                        gui_button_pressed =
+                            guis_.at("sensors").activate(mouse_position);
+
+                        handleSensorButtonPressed(gui_button_pressed);
+                    }
+
                     if (guis_.at("path_algorithm").visible()) {
                         gui_button_pressed =
                             guis_.at("path_algorithm").activate(mouse_position);
@@ -167,6 +174,8 @@ void GraphicalSimulation::loadTextures() {
     tex_manager_.loadTexture("tile_S", "graphic_models/walls_S.png");
     tex_manager_.loadTexture("tile_SW", "graphic_models/walls_SW.png");
     tex_manager_.loadTexture("tile_W", "graphic_models/walls_W.png");
+    tex_manager_.loadTexture("tile_NESW", "graphic_models/walls_NESW.png");
+    tex_manager_.loadTexture("tile_NONE", "graphic_models/walls_NONE.png");
     // Robot
     tex_manager_.loadTexture("robot", "graphic_models/robot_sprite.png");
 }
@@ -215,9 +224,13 @@ void GraphicalSimulation::createGui() {
         {std::make_pair("BRUTE_FORCE", GuiType::BRUTE_FORCE),
          std::make_pair("WALL_FOLLOWER", GuiType::WALL_FOLLOWER)}));
 
-    guis_.at("main_menu").setPosition(0.f, 100.f);
+    guis_.emplace("sensors", Gui(sf::Vector2f(140, 20), 4, true, stylesheets_.at("button"),
+        {std::make_pair("IR SENSOR", GuiType::IR_SENSOR),
+         std::make_pair("LASER SCANNER", GuiType::LASER_SCANNER)}));
+
+    guis_.at("main_menu").setPosition(1.f, 1.f);
     guis_.at("main_menu").show();
-    guis_.at("info_bar").setPosition(300.f, 0.f);
+    guis_.at("info_bar").setPosition(window_->getSize().x / 2 - guis_.at("info_bar").getSize().x / 2, 0.f);
     guis_.at("info_bar").show();
     guis_.at("announcements").setPosition(window_->getSize().x / 2 - 140, 40);
     guis_.at("announcements").hide();
@@ -226,6 +239,12 @@ void GraphicalSimulation::createGui() {
         guis_.at("main_menu").getPosition().y + guis_.at("main_menu").getSize().y / guis_.at("main_menu").entries().size() * 3);
     guis_.at("path_algorithm").highlight(1);
     guis_.at("path_algorithm").hide();
+    guis_.at("sensors").setPosition(
+        guis_.at("main_menu").getSize().x,
+        guis_.at("main_menu").getPosition().y + guis_.at("main_menu").getSize().y / guis_.at("main_menu").entries().size() * 2);
+    guis_.at("sensors").highlight(0);
+    guis_.at("sensors").hide();
+
 }
 
 void GraphicalSimulation::handleGuiButtonPressed(GuiType gui_button) {
@@ -247,6 +266,7 @@ void GraphicalSimulation::handleGuiButtonPressed(GuiType gui_button) {
             break;
         case GuiType::SENSORS:
             input_text_ = false;
+            guis_.at("sensors").show();
             std::cout << gui_button << " pressed" <<std::endl;
             break;
         case GuiType::PATH_ALGORITHMS:
@@ -277,21 +297,41 @@ void GraphicalSimulation::handleGuiButtonPressed(GuiType gui_button) {
     }
 }
 
-void GraphicalSimulation::handlePathAlgorithmButtonPressed(GuiType sensors_button) {
+void GraphicalSimulation::handlePathAlgorithmButtonPressed(GuiType path_algorithm) {
 
-    switch (sensors_button) {
+    switch (path_algorithm) {
         case GuiType::NONE:
             guis_.at("path_algorithm").hide();
-            std::cout << sensors_button << " pressed" <<std::endl;
+            std::cout << path_algorithm << " pressed" <<std::endl;
             break;
         case GuiType::BRUTE_FORCE:
             guis_.at("path_algorithm").highlight(0);
-            graphical_robot_.setPathAlgorithm(sensors_button);
-            std::cout << sensors_button << " pressed" <<std::endl;
+            graphical_robot_.setPathAlgorithm(path_algorithm);
+            std::cout << path_algorithm << " pressed" <<std::endl;
             break;
         case GuiType::WALL_FOLLOWER:
             guis_.at("path_algorithm").highlight(1);
-            graphical_robot_.setPathAlgorithm(sensors_button);
+            graphical_robot_.setPathAlgorithm(path_algorithm);
+            std::cout << path_algorithm << " pressed" <<std::endl;
+            break;
+    }
+}
+
+void GraphicalSimulation::handleSensorButtonPressed(GuiType sensors_button) {
+
+    switch (sensors_button) {
+        case GuiType::NONE:
+            guis_.at("sensors").hide();
+            std::cout << sensors_button << " pressed" <<std::endl;
+            break;
+        case GuiType::IR_SENSOR:
+            guis_.at("sensors").highlight(0);
+            graphical_robot_.setSensor(sensors_button);
+            std::cout << sensors_button << " pressed" <<std::endl;
+            break;
+        case GuiType::LASER_SCANNER:
+            guis_.at("sensors").highlight(1);
+            graphical_robot_.setSensor(sensors_button);
             std::cout << sensors_button << " pressed" <<std::endl;
             break;
     }

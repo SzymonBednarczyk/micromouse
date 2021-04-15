@@ -17,6 +17,8 @@ extern std::string wallsTypeToStr(WallsType type) {
         case WallsType::SW:   return "tile_SW";
         case WallsType::NSW:  return "tile_NSW";
         case WallsType::ESW:  return "tile_ESW";
+        case WallsType::NESW: return "tile_NESW";
+        case WallsType::NONE: return "tile_NONE";
     }
 }
 
@@ -37,6 +39,8 @@ std::ostream &operator << (std::ostream &os, const WallsType &wall_type) {
         case WallsType::SW:   os << "SW"; break;
         case WallsType::NSW:  os << "NSW"; break;
         case WallsType::ESW:  os << "ESW"; break;
+        case WallsType::NESW: os << "NESW"; break;
+        case WallsType::NONE: os << "NONE"; break;
     }
 
 	return os;
@@ -71,6 +75,8 @@ std::ostream &operator << (std::ostream &os, const GuiType &gui_type) {
         case GuiType::LOAD:             os << "LOAD"; break;
         case GuiType::WALL_FOLLOWER:    os << "WALL_FOLLOWER"; break;
         case GuiType::BRUTE_FORCE:      os << "BRUTE_FORCE"; break;
+        case GuiType::IR_SENSOR:        os << "IR_SENSOR"; break;
+        case GuiType::LASER_SCANNER:    os << "LASER_SCANNER"; break;
     }
 
 	return os;
@@ -88,7 +94,9 @@ extern std::string guiTypeToStr(GuiType type) {
         case GuiType::SAVE:             return "SAVE";
         case GuiType::LOAD:             return "LOAD";
         case GuiType::WALL_FOLLOWER:    return "WALL_FOLLOWER";
-        case GuiType::BRUTE_FORCE:      return "BRUTE_FORCEBRUTE_FORCE";
+        case GuiType::BRUTE_FORCE:      return "BRUTE_FORCE";
+        case GuiType::IR_SENSOR:        return "IR_SENSOR";
+        case GuiType::LASER_SCANNER:    return "LASER_SCANNER";
     }
 }
 
