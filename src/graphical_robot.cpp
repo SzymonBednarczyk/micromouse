@@ -71,3 +71,14 @@ void GraphicalRobot::setPathAlgorithm(GuiType algorithm) {
 void GraphicalRobot::setSensor(GuiType sensor) {
      robot_.setSensor(sensor);
 }
+
+void GraphicalRobot::setSensor(GuiType sensor, sf::Color color) {
+     robot_.setSensor(sensor);
+     graphical_sensor_.setColor(color);
+}
+
+GraphicalSensor* GraphicalRobot::graphicalSensor() { return &graphical_sensor_; }
+
+std::string GraphicalRobot::getSensorName() {
+     return robot_.getSensorName();
+}

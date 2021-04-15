@@ -30,6 +30,7 @@ public:
     Direction robotDirection() const;
     void setPathAlgorithm(GuiType algorithm);
     void setSensor(GuiType sensor);
+    std::string getSensorName();
 private:
     void changeVelocities();
     void convertReadingsToMap(SensorReadings readings);

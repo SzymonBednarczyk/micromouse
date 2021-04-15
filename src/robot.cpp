@@ -120,6 +120,10 @@ void Robot::setSensor(GuiType sensor) {
     }
 }
 
+std::string Robot::getSensorName() {
+    return sensor_->getTexture();
+}
+
 void Robot::changeVelocities() {
     switch (robot_direction_) {
         case Direction::N:

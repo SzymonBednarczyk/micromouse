@@ -13,6 +13,7 @@ public:
                                std::pair<size_t, size_t> robot_pose,
                                Direction robot_direction);
 private:
+    std::string sensor_name_;
 };
 
 

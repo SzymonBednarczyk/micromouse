@@ -6,6 +6,7 @@
 #include "texture_manager.h"
 #include "labyrinth.h"
 #include "graphical_labyrinth.h"
+#include "graphical_sensor.h"
 
 
 class GraphicalRobot : public Entity {
@@ -26,9 +27,13 @@ public:
     bool changeDirection(sf::Vector2f robot_relative_pose);
     void setPathAlgorithm(GuiType algorithm);
     void setSensor(GuiType sensor);
+    void setSensor(GuiType sensor, sf::Color color);
+    GraphicalSensor* graphicalSensor();
+    std::string getSensorName();
 private:
     const std::string texture_name_ = "robot";
     Robot robot_;
+    GraphicalSensor graphical_sensor_;
 };
 
 #endif // GRAPHICAL_ROBOT_H

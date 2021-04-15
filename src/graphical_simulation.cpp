@@ -4,6 +4,10 @@
 GraphicalSimulation::GraphicalSimulation() {
     input_text_ = false;
     frame_limit_ = 60;
+    menu_interaction_ = "";
+    player_input_ = "bin/labyrinth.txt";
+    player_text_.setString(player_input_);
+
     initVariables();
     initWindow();
     loadTextures();
@@ -17,6 +21,20 @@ GraphicalSimulation::GraphicalSimulation() {
                                        GraphicalRobot::PIXEL_SIZE_Y),
                           tex_manager_.getTextureRef(
                               graphical_robot_.textureName()));
+    graphical_robot_.graphicalSensor()->load(sf::Vector2u(GraphicalSensor::SENSOR_PIXEL_SIZE,
+                                                          GraphicalSensor::SENSOR_PIXEL_SIZE),
+                                            sf::Color::Blue);
+    // graphical_robot_.graphicalSensor()->setPosition(300.f, 300.f);
+    graphical_robot_.graphicalSensor()->setPosition(graphical_robot_.getPosition() -
+        sf::Vector2f(GraphicalSensor::SENSOR_PIXEL_SIZE / 2, GraphicalSensor::SENSOR_PIXEL_SIZE / 2));
+
+    win_flag_.load(sf::Vector2u(LabyrinthTile::TILE_PIXEL_SIZE,
+                                LabyrinthTile::TILE_PIXEL_SIZE),
+                   tex_manager_.getTextureRef("winner_flag"));
+    win_flag_.setPosition(
+        graphical_labyrinth_.DRAWING_ORIGIN_X + (Labyrinth::LABYRINTH_SIZE - 1) * LabyrinthTile::TILE_PIXEL_SIZE,
+        graphical_labyrinth_.DRAWING_ORIGIN_Y - (Labyrinth::LABYRINTH_SIZE - 1) * LabyrinthTile::TILE_PIXEL_SIZE);
+
     simulation_ = Simulation(LabyrinthTile::TILE_PIXEL_SIZE);
 }
 
@@ -52,6 +70,8 @@ void GraphicalSimulation::update() {
             }
 
             graphical_robot_.move(graphical_robot_.getRobotVelocity());
+            graphical_robot_.graphicalSensor()->setPosition(graphical_robot_.getPosition() -
+                sf::Vector2f(GraphicalSensor::SENSOR_PIXEL_SIZE / 2, GraphicalSensor::SENSOR_PIXEL_SIZE / 2));
         }
 
         guis_.at("info_bar").setEntryText(1, simulation_.getTimeElapsed());
@@ -63,10 +83,17 @@ void GraphicalSimulation::update() {
 void GraphicalSimulation::render() {
     // clear window
     window_->clear(sf::Color(150, 255, 255, 0));
+    if (guis_.at("menu_interactions").visible() &&
+        menu_interaction_clock_.getElapsedTime().asSeconds() > 3.f) {
+
+        guis_.at("menu_interactions").hide();
+    }
 
     // draw objects
     graphical_labyrinth_.draw(window_);
+    window_->draw(win_flag_);
     window_->draw(graphical_robot_);
+    window_->draw(*graphical_robot_.graphicalSensor());
     // draw GUIs
     for(auto &gui : guis_) {
         window_->draw(gui.second);
@@ -178,6 +205,10 @@ void GraphicalSimulation::loadTextures() {
     tex_manager_.loadTexture("tile_NONE", "graphic_models/walls_NONE.png");
     // Robot
     tex_manager_.loadTexture("robot", "graphic_models/robot_sprite.png");
+    // Sensors
+    tex_manager_.loadTexture("sensors", "graphic_models/sensors.png");
+    // Win flag
+    tex_manager_.loadTexture("winner_flag", "graphic_models/win_flag.png");
 }
 
 void GraphicalSimulation::loadFonts() {
@@ -204,7 +235,7 @@ void GraphicalSimulation::loadStylesheets() {
 }
 
 void GraphicalSimulation::createGui() {
-    guis_.emplace("main_menu", Gui(sf::Vector2f(140, 20), 4, false, stylesheets_.at("button"),
+    guis_.emplace("main_menu", Gui(sf::Vector2f(160, 20), 4, false, stylesheets_.at("button"),
         {std::make_pair("START", GuiType::START),
          std::make_pair("STOP", GuiType::STOP),
          std::make_pair("SENSORS", GuiType::SENSORS),
@@ -220,6 +251,9 @@ void GraphicalSimulation::createGui() {
     guis_.emplace("announcements", Gui(sf::Vector2f(230, 50), 4, true, stylesheets_.at("announcements"),
         {std::make_pair(announcement_, GuiType::TEXT)}));
 
+    guis_.emplace("menu_interactions", Gui(sf::Vector2f(230, 15), 4, true, stylesheets_.at("announcements"),
+        {std::make_pair(menu_interaction_, GuiType::TEXT)}));
+
     guis_.emplace("path_algorithm", Gui(sf::Vector2f(140, 20), 4, true, stylesheets_.at("button"),
         {std::make_pair("BRUTE_FORCE", GuiType::BRUTE_FORCE),
          std::make_pair("WALL_FOLLOWER", GuiType::WALL_FOLLOWER)}));
@@ -234,6 +268,8 @@ void GraphicalSimulation::createGui() {
     guis_.at("info_bar").show();
     guis_.at("announcements").setPosition(window_->getSize().x / 2 - 140, 40);
     guis_.at("announcements").hide();
+    guis_.at("menu_interactions").setPosition(guis_.at("main_menu").getPosition() + sf::Vector2f(guis_.at("main_menu").getSize().x + 10.f, 0.f));
+    guis_.at("menu_interactions").hide();
     guis_.at("path_algorithm").setPosition(
         guis_.at("main_menu").getSize().x,
         guis_.at("main_menu").getPosition().y + guis_.at("main_menu").getSize().y / guis_.at("main_menu").entries().size() * 3);
@@ -256,11 +292,17 @@ void GraphicalSimulation::handleGuiButtonPressed(GuiType gui_button) {
             break;
         case GuiType::START:
             simulation_.start();
+            guis_.at("menu_interactions").setEntryText(0, "Started");
+            guis_.at("menu_interactions").show();
+            menu_interaction_clock_.restart();
             input_text_ = false;
             std::cout << gui_button << " pressed" <<std::endl;
             break;
         case GuiType::STOP:
             simulation_.stop();
+            guis_.at("menu_interactions").setEntryText(0, "Stopped");
+            guis_.at("menu_interactions").show();
+            menu_interaction_clock_.restart();
             input_text_ = false;
             std::cout << gui_button << " pressed" <<std::endl;
             break;
@@ -277,6 +319,9 @@ void GraphicalSimulation::handleGuiButtonPressed(GuiType gui_button) {
         case GuiType::SAVE:
             input_text_ = false;
             graphical_labyrinth_.saveLabyrinthToFile(player_input_);
+            guis_.at("menu_interactions").setEntryText(0, "Saved");
+            guis_.at("menu_interactions").show();
+            menu_interaction_clock_.restart();
             std::cout << gui_button << " pressed" <<std::endl;
             break;
         case GuiType::LOAD:
@@ -284,7 +329,13 @@ void GraphicalSimulation::handleGuiButtonPressed(GuiType gui_button) {
 
             if(graphical_labyrinth_.loadLabyrinthFromFile(player_input_)) {
                 graphical_labyrinth_.loadEntity(&tex_manager_);
+                guis_.at("menu_interactions").setEntryText(0, "Successfully loaded");
+            } else {
+                guis_.at("menu_interactions").setEntryText(0, "Error wrong path or data in file");
             }
+
+            guis_.at("menu_interactions").show();
+            menu_interaction_clock_.restart();
             std::cout << gui_button << " pressed" <<std::endl;
             break;
         case GuiType::TEXT:
@@ -307,11 +358,21 @@ void GraphicalSimulation::handlePathAlgorithmButtonPressed(GuiType path_algorith
         case GuiType::BRUTE_FORCE:
             guis_.at("path_algorithm").highlight(0);
             graphical_robot_.setPathAlgorithm(path_algorithm);
+
+            menu_interaction_ = "Changed algorithm to " + guiTypeToStr(path_algorithm);
+            guis_.at("menu_interactions").setEntryText(0, menu_interaction_);
+            guis_.at("menu_interactions").show();
+            menu_interaction_clock_.restart();
             std::cout << path_algorithm << " pressed" <<std::endl;
             break;
         case GuiType::WALL_FOLLOWER:
             guis_.at("path_algorithm").highlight(1);
             graphical_robot_.setPathAlgorithm(path_algorithm);
+
+            menu_interaction_ = "Changed algorithm to " + guiTypeToStr(path_algorithm);
+            guis_.at("menu_interactions").setEntryText(0, menu_interaction_);
+            guis_.at("menu_interactions").show();
+            menu_interaction_clock_.restart();
             std::cout << path_algorithm << " pressed" <<std::endl;
             break;
     }
@@ -326,12 +387,22 @@ void GraphicalSimulation::handleSensorButtonPressed(GuiType sensors_button) {
             break;
         case GuiType::IR_SENSOR:
             guis_.at("sensors").highlight(0);
-            graphical_robot_.setSensor(sensors_button);
+            graphical_robot_.setSensor(sensors_button, sf::Color::Blue);
+
+            menu_interaction_ = "Changed sensor to " + guiTypeToStr(sensors_button);
+            guis_.at("menu_interactions").setEntryText(0, menu_interaction_);
+            guis_.at("menu_interactions").show();
+            menu_interaction_clock_.restart();
             std::cout << sensors_button << " pressed" <<std::endl;
             break;
         case GuiType::LASER_SCANNER:
             guis_.at("sensors").highlight(1);
-            graphical_robot_.setSensor(sensors_button);
+            graphical_robot_.setSensor(sensors_button, sf::Color::Magenta);
+
+            menu_interaction_ = "Changed sensor to " + guiTypeToStr(sensors_button);
+            guis_.at("menu_interactions").setEntryText(0, menu_interaction_);
+            guis_.at("menu_interactions").show();
+            menu_interaction_clock_.restart();
             std::cout << sensors_button << " pressed" <<std::endl;
             break;
     }

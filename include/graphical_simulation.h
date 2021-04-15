@@ -9,6 +9,8 @@
 
 #include "graphical_labyrinth.h"
 #include "graphical_robot.h"
+#include "graphical_sensor.h"
+
 #include "texture_manager.h"
 #include "simulation.h"
 #include "gui.h"
@@ -55,7 +57,10 @@ private:
     std::string player_input_;
     sf::Text player_text_;
     std::string announcement_;
+    std::string menu_interaction_;
     unsigned int frame_limit_;
+    sf::Clock menu_interaction_clock_;
+    Entity win_flag_;
 };
 
 #endif

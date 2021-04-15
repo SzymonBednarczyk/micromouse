@@ -1,8 +1,6 @@
 #include "ir_sensor.h"
 
-IrSensor::IrSensor(/* args */)
-{
-    ;
+IrSensor::IrSensor() {
 }
 
 SensorReadings
