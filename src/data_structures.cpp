@@ -69,6 +69,8 @@ std::ostream &operator << (std::ostream &os, const GuiType &gui_type) {
         case GuiType::PATH_ALGORITHMS:  os << "PATH_ALGORITHMS"; break;
         case GuiType::SAVE:             os << "SAVE"; break;
         case GuiType::LOAD:             os << "LOAD"; break;
+        case GuiType::WALL_FOLLOWER:    os << "WALL_FOLLOWER"; break;
+        case GuiType::BRUTE_FORCE:      os << "BRUTE_FORCE"; break;
     }
 
 	return os;
@@ -85,6 +87,8 @@ extern std::string guiTypeToStr(GuiType type) {
         case GuiType::PATH_ALGORITHMS:  return "PATH_ALGORITHMS";
         case GuiType::SAVE:             return "SAVE";
         case GuiType::LOAD:             return "LOAD";
+        case GuiType::WALL_FOLLOWER:    return "WALL_FOLLOWER";
+        case GuiType::BRUTE_FORCE:      return "BRUTE_FORCEBRUTE_FORCE";
     }
 }
 

@@ -3,7 +3,7 @@
 // public
 GraphicalSimulation::GraphicalSimulation() {
     input_text_ = false;
-    frame_limit_ = 30;
+    frame_limit_ = 5;
     initVariables();
     initWindow();
     loadTextures();
@@ -127,7 +127,16 @@ void GraphicalSimulation::pollEvents() {
             // mouse button pressed
             case sf::Event::MouseButtonPressed:
                 if(ev_.mouseButton.button == sf::Mouse::Left) {
-                    GuiType gui_button_pressed =
+                    GuiType gui_button_pressed;
+
+                    if (guis_.at("path_algorithm").visible()) {
+                        gui_button_pressed =
+                            guis_.at("path_algorithm").activate(mouse_position);
+
+                        handlePathAlgorithmButtonPressed(gui_button_pressed);
+                    }
+
+                    gui_button_pressed =
                         guis_.at("main_menu").activate(mouse_position);
 
                     if (gui_button_pressed != GuiType::NONE) {
@@ -136,7 +145,7 @@ void GraphicalSimulation::pollEvents() {
                         input_text_ = false;
                     }
                 }
-                break;
+            break;
         }
 
     }
@@ -194,11 +203,17 @@ void GraphicalSimulation::createGui() {
          std::make_pair("TEXT", GuiType::TEXT),
          std::make_pair("SAVE", GuiType::SAVE),
          std::make_pair("LOAD FROM FILE", GuiType::LOAD)}));
+
     guis_.emplace("info_bar", Gui(sf::Vector2f(130, 20), 4, true, stylesheets_.at("text"),
         {std::make_pair("Time elapsed:", GuiType::TEXT),
          std::make_pair("0", GuiType::TEXT)}));
+
     guis_.emplace("announcements", Gui(sf::Vector2f(230, 50), 4, true, stylesheets_.at("announcements"),
         {std::make_pair(announcement_, GuiType::TEXT)}));
+
+    guis_.emplace("path_algorithm", Gui(sf::Vector2f(140, 20), 4, true, stylesheets_.at("button"),
+        {std::make_pair("BRUTE_FORCE", GuiType::BRUTE_FORCE),
+         std::make_pair("WALL_FOLLOWER", GuiType::WALL_FOLLOWER)}));
 
     guis_.at("main_menu").setPosition(0.f, 100.f);
     guis_.at("main_menu").show();
@@ -206,6 +221,11 @@ void GraphicalSimulation::createGui() {
     guis_.at("info_bar").show();
     guis_.at("announcements").setPosition(window_->getSize().x / 2 - 140, 40);
     guis_.at("announcements").hide();
+    guis_.at("path_algorithm").setPosition(
+        guis_.at("main_menu").getSize().x,
+        guis_.at("main_menu").getPosition().y + guis_.at("main_menu").getSize().y / guis_.at("main_menu").entries().size() * 3);
+    guis_.at("path_algorithm").highlight(1);
+    guis_.at("path_algorithm").hide();
 }
 
 void GraphicalSimulation::handleGuiButtonPressed(GuiType gui_button) {
@@ -231,6 +251,7 @@ void GraphicalSimulation::handleGuiButtonPressed(GuiType gui_button) {
             break;
         case GuiType::PATH_ALGORITHMS:
             input_text_ = false;
+            guis_.at("path_algorithm").show();
             std::cout << gui_button << " pressed" <<std::endl;
             break;
         case GuiType::SAVE:
@@ -252,6 +273,26 @@ void GraphicalSimulation::handleGuiButtonPressed(GuiType gui_button) {
             break;
         default:
             input_text_ = false;
+            break;
+    }
+}
+
+void GraphicalSimulation::handlePathAlgorithmButtonPressed(GuiType sensors_button) {
+
+    switch (sensors_button) {
+        case GuiType::NONE:
+            guis_.at("path_algorithm").hide();
+            std::cout << sensors_button << " pressed" <<std::endl;
+            break;
+        case GuiType::BRUTE_FORCE:
+            guis_.at("path_algorithm").highlight(0);
+            graphical_robot_.setPathAlgorithm(sensors_button);
+            std::cout << sensors_button << " pressed" <<std::endl;
+            break;
+        case GuiType::WALL_FOLLOWER:
+            guis_.at("path_algorithm").highlight(1);
+            graphical_robot_.setPathAlgorithm(sensors_button);
+            std::cout << sensors_button << " pressed" <<std::endl;
             break;
     }
 }

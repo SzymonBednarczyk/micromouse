@@ -18,7 +18,7 @@ enum class Direction {N = 0, E, S, W};
 
 std::ostream &operator << (std::ostream &os, const Direction &direction);
 
-enum class GuiType{NONE = 0, TEXT, START, STOP, SENSORS, PATH_ALGORITHMS, SAVE, LOAD};
+enum class GuiType{NONE = 0, TEXT, START, STOP, SENSORS, PATH_ALGORITHMS, SAVE, LOAD, WALL_FOLLOWER, BRUTE_FORCE};
 
 std::ostream &operator << (std::ostream &os, const GuiType &gui_type);
 

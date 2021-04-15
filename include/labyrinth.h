@@ -20,8 +20,8 @@ public:
     bool loadLabyrinthFromFile(std::string file_path);
     void saveLabyrinthToFile(std::string file_path);
 private:
-    TileWalls tile_walls_of_labirynth_ [LABYRINTH_SIZE][LABYRINTH_SIZE] = {{TileWalls(14), TileWalls(WallsType::ESW), TileWalls(WallsType::SW), TileWalls(WallsType::ES)}, // 0
-                                                                           {TileWalls(WallsType::EW), TileWalls(WallsType::W) , TileWalls(WallsType::NE), TileWalls(WallsType::EW)},    // 1
+    TileWalls tile_walls_of_labirynth_ [LABYRINTH_SIZE][LABYRINTH_SIZE] = {{TileWalls(14), TileWalls(WallsType::NSW), TileWalls(WallsType::S), TileWalls(WallsType::ES)}, // 0
+                                                                           {TileWalls(WallsType::W), TileWalls(WallsType::S) , TileWalls(WallsType::NE), TileWalls(WallsType::EW)},    // 1
                                                                            {TileWalls(WallsType::EW) , TileWalls(WallsType::NW) , TileWalls(WallsType::ES), TileWalls(WallsType::EW)},
                                                                            {TileWalls(WallsType::NW) , TileWalls(WallsType::NS) , TileWalls(WallsType::NE), TileWalls(WallsType::NEW)}}; // 2
     //  _______

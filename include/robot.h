@@ -13,6 +13,7 @@
 #include "path_algorythm.h"
 #include "wall_follower.h"
 #include "labyrinth_tile.h"
+#include "brute_force.h"
 
 class Robot {
 public:
@@ -26,6 +27,7 @@ public:
     float xVel() const;
     float yVel() const;
     Direction robotDirection() const;
+    void setPathAlgorithm(GuiType algorithm);
 private:
     void changeVelocities();
     TileWalls convertReadingsToMap(SensorReadings readings);
@@ -34,6 +36,7 @@ private:
     IrSensor ir_sensor_;
     PathAlgorithm* path_algorithm_{nullptr};
     WallFollower wall_follower_;
+    BruteForce brute_force_;
     std::vector<std::vector<TileWalls>> labyrinth_map_;
     std::pair<size_t, size_t> robot_maze_coordinates_;
     bool new_tile_;

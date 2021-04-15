@@ -24,6 +24,7 @@ public:
     sf::Vector2f getRobotVelocity();
     void changeAnimation();
     bool changeDirection(sf::Vector2f robot_relative_pose);
+    void setPathAlgorithm(GuiType algorithm);
 private:
     const std::string texture_name_ = "robot";
     Robot robot_;

@@ -63,3 +63,7 @@ void GraphicalRobot::changeAnimation() {
 bool GraphicalRobot::changeDirection(sf::Vector2f robot_relative_pose) {
      return robot_.changeDirection(robot_relative_pose.x, robot_relative_pose.y);
 }
+
+void GraphicalRobot::setPathAlgorithm(GuiType algorithm) {
+     robot_.setPathAlgorithm(algorithm);
+}

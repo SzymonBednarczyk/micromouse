@@ -93,6 +93,20 @@ float Robot::yVel() const { return y_vel_; }
 
 Direction Robot::robotDirection() const { return robot_direction_; }
 
+void Robot::setPathAlgorithm(GuiType algorithm) {
+    switch (algorithm) {
+        case GuiType::WALL_FOLLOWER:
+            path_algorithm_ = &wall_follower_;
+            break;
+        case GuiType::BRUTE_FORCE:
+            path_algorithm_ = &brute_force_;
+            break;
+        default:
+            path_algorithm_ = &wall_follower_;
+            break;
+    }
+}
+
 void Robot::changeVelocities() {
     switch (robot_direction_) {
         case Direction::N:
